@@ -1,0 +1,37 @@
+<div layout="row" id="exercises" layout-wrap layout-padding layout-sm="row">
+  <div flex="100">
+    <md-input-container class="md-block">
+      <!-- Use floating placeholder instead of label -->
+      <ng-md-icon icon="search" ></ng-md-icon>
+      <input ng-model="searched.$" type="text" placeholder="Search Exercises">
+    </md-input-container>
+  </div>
+  <div flex="100">
+    <p>Or Filter By:</p>
+  </div>
+  <exercise-filter></exercise-filter>
+  <div flex="50" flex-sm="100" ng-repeat="exercise in exercises | filter:searched">
+    <md-card class="exercise-card" layout-padding>
+      <md-card-title>
+        <md-card-title-text layout="row" layout-wrap>
+          <span class="md-headline" flex="100">
+            <span class="step-number" ng-cloak>{{exercise.step}}</span>
+            <span class="exercise-name" ng-cloak>{{exercise.exercise_name}}</span>
+          </span>
+          <span class="md-subhead" flex="100" ng-cloak>{{(exercise.body_part | getValById:bodyParts:'$id').name}}</span>
+        </md-card-title-text>
+      </md-card-title>
+      <md-divider></md-divider>
+      <md-card-content layout="row" layout-wrap>
+        <div flex="33">
+            <div ng-if="exercise.beg_reps" ng-cloak>Beg:{{exercise.beg_sets}} x {{exercise.beg_reps}}<br /></div>
+            <div ng-if="exercise.int_sets" ng-cloak>Int:{{exercise.int_sets}} x {{exercise.int_reps}}<br /></div>
+            <div ng-if="exercise.goal_sets" ng-cloak>Goal:{{exercise.goal_sets}} x {{exercise.goal_reps}}<br /></div>
+        </div>
+        <div flex="66" layout="row" layout-align="end center">
+          <img err-src="img/no-image.jpg" ng-src="img/exercises/{{(exercise.body_part | getValById:bodyParts:'$id').type}}/{{exercise.body_part}}/{{exercise.step}}.jpg" class="md-card-image">
+        </div>
+      </md-card-content>
+    </md-card>
+  </div>
+</div>

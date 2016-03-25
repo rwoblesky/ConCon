@@ -1,0 +1,72 @@
+.capitalize {
+  text-transform: capitalize;
+}
+.navigation-list {
+  color: grey;
+}
+.navigation-list .md-button {
+    color: inherit;
+    text-align: left;
+    width: 90%;
+}
+.navigation-list .selected {
+  color: rgb(21,101,192);
+}
+.navigation-list .md-button ng-md-icon{
+  color: black;
+}
+md-toolbar .user {
+  font-size: 14px;
+}
+.exercise-card img {
+  height: 75%;
+  width: 75%;
+}
+#log md-datepicker {
+  background: transparent;
+}
+#log .md-button.md-fab.md-fab-bottom-right {
+  top: 30px;
+}
+#log .md-datepicker-input {
+  font-size: 18px;
+  color: white;
+}
+#exercises .md-headline,
+#log .md-headline {
+  display: flex;
+}
+.exercise-card .step-number {
+  display: block;
+  height: 32px;
+  width: 32px;
+  line-height: 32px;
+  -moz-border-radius: 30px;
+  border-radius: 30px;
+  background-color: #AFAFAF;
+  color: white;
+  text-align: center;
+}
+.exercise-card .exercise-name {
+  padding-left: 5px;
+}
+.level-completed {
+  margin-top: 26px;
+  padding-right: 10px;
+  height: 40px;
+  width: 30px;
+  line-height: 15px;
+  -moz-border-radius: 30px;
+  border-radius: 30px;
+  background-color: #1565C0;
+  color: white;
+}
+.level-completed span {
+  margin-left: 10px;
+}
+.level-completed .level-name {
+  margin-top: 5px;
+}
+.body-part-level > md-list-item > div.md-list-item-text {
+  margin-left: 5px;
+}

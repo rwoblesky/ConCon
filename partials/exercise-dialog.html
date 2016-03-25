@@ -1,0 +1,14 @@
+<md-dialog ng-cloak>
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h2>{{dialogExercise.exercise_name}}</h2>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="cancel()">
+        <ng-md-icon icon="close"></ng-md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-dialog-content>
+    <img err-src="img/no-image.jpg" ng-src="img/exercises/{{(dialogExercise.body_part | getValById:bodyParts:'$id').type}}/{{dialogExercise.body_part}}/{{dialogExercise.step}}.jpg" class="md-card-image">
+  </md-dialog-content>
+</md-dialog>

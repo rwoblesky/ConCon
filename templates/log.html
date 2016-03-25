@@ -1,0 +1,46 @@
+<div id="log" layout="row" layout-wrap layout-sm="row">
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <md-datepicker ng-model="logDate" md-placeholder="Enter date"></md-datepicker>
+      <md-button flex class="md-fab md-fab-bottom-right" aria-label="Add Exercise" ng-click="showAdvanced($event)">
+        <ng-md-icon icon="add"></ng-md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+
+  <div flex="100" layout="row" layout-sm="column" layout-wrap>
+    <div class="click panel circle" ng-class="{'flip':exercise.isFlipped}" flex="50" flex-sm="100" ng-repeat="exercise in todaysLog">
+      <md-card class="exercise-card" layout-padding>
+        <md-card-title>
+          <md-card-title-text layout="row" layout-wrap>
+            <span class="md-headline" flex="100">
+              <span class="step-number" ng-cloak>{{(exercise.step_id | getValById:exercises:'step_id').step}}</span>
+              <span class="exercise-name" ng-cloak>{{exercise.exercise_name}}</span>
+            </span>
+            <span class="md-subhead" flex="100" ng-cloak>{{((exercise.step_id | getValById:exercises:'step_id').body_part | getValById:bodyParts:'$id').name}}</span>
+          </md-card-title-text>
+        </md-card-title>
+        <md-divider></md-divider>
+        <md-card-content>
+          <div class="row">
+            <ng-md-icon flex="20" icon="done" style="fill:green" ng-show="exercise.goal_met"></ng-md-icon>
+            <ng-md-icon flex="20" icon="clear" style="fill:red" ng-show="!exercise.goal_met"></ng-md-icon>
+            <span flex="80" ng-cloak>Goal: {{(exercise.step_id | getValById:exercises:'step_id').goal_sets}} x {{(exercise.step_id | getValById:exercises:'step_id').goal_reps}}</span>
+          </div>
+          <md-input-container class="md-block" ng-repeat="set in exercise.sets">
+            <label ng-cloak>Set No: {{set.set_no}}</label>
+            <input required type="number" step="any" ng-model="set.set_val" min="0"
+              max="200" ng-change="change(exercise)" ng-model-options="{ debounce: 750 }"/>
+          </md-input-container>
+          <md-content ng-show="exercise.goal_met">
+            Exercise Goal Met!
+          </md-content>
+        </md-card-content>
+        <md-card-actions layout="row" layout-align="end center">
+          <md-button ng-click="showExercise($event, exercise.exercise_name)">Exercise Info</md-button>
+          <md-button class="md-primary" ng-click="addSet(exercise)">Add Set</md-button>
+        </md-card-actions>
+      </md-card>
+    </div>
+  </div>
+</div>

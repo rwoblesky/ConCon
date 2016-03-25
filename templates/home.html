@@ -1,0 +1,25 @@
+<div layout="row" layout-padding layout-wrap layout-sm="column">
+  <div flex="100" flex-sm="100">
+    <md-subheader class="md-no-sticky">Highest Levels Completed</md-subheader>
+    <div layout="row" layout-wrap>
+      <div flex="20" flex-sm="33" ng-repeat="body in bodyParts">
+        <div class="body-part-level" layout="row">
+          <md-list-item class="md-3-line">
+            <div class="level-completed">
+              <div layout="column">
+                <span class="level-name" flex>lvl</span>
+                <span class="level" flex>1</span>
+              </div>
+            </div>
+            <divider></divider>
+            <div class="md-list-item-text" layout="column">
+              <h3>{{ body.name }}</h3>
+              <h4>{{ body.type }}</h4>
+            </div>
+          </md-list-item>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

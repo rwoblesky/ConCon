@@ -1,0 +1,40 @@
+<div flex="100" layout="row" layout-sm="row" layout-wrap>
+  <div flex="33" flex-sm="100">
+    <md-input-container>
+      <label>Exercise Type</label>
+      <md-select ng-model="searched.type">
+         <md-option ng-repeat="type in exerciseTypes" value="{{type.val}}">
+           {{type.name}}
+         </md-option>
+      </md-select>
+    </md-input-container>
+  </div>
+  <div flex="33" flex-sm="100">
+    <md-input-container>
+      <label>Filter Body Part</label>
+      <md-select ng-model="searched.body_part">
+        <md-option ng-value="bodypart.$id" ng-repeat="bodypart in bodyParts | filter:searched.type">{{ bodypart.name }}</md-option>
+      </md-select>
+    </md-input-container>
+  </div>
+  <div flex="33" flex-sm="100">
+    <md-input-container>
+      <label>Step</label>
+      <md-select ng-model="searched.step">
+        <md-option ng-value="1">1</md-option>
+        <md-option ng-value="2">2</md-option>
+        <md-option ng-value="3">3</md-option>
+        <md-option ng-value="4">4</md-option>
+        <md-option ng-value="5">5</md-option>
+        <md-option ng-value="6">6</md-option>
+        <md-option ng-value="7">7</md-option>
+        <md-option ng-value="8">8</md-option>
+        <md-option ng-value="9">9</md-option>
+        <md-option ng-value="10">10</md-option>
+      </md-select>
+    </md-input-container>
+  </div>
+  <div flex="100" flex-sm="100" layout="row" layout-align="end center">
+    <md-button class="md-warn" ng-click="clearFilters()">Clear</md-button>
+  </div>
+</div>
