@@ -3,16 +3,29 @@
     <md-card layout-padding class="history-card" >
       <md-card-title>
         <md-card-title-text>
-          <span class="md-headline">{{ key }}</span>
+          <span class="md-headline">{{ key  | date:'mediumDate'}}</span>
           <span class="md-subhead"></span>
         </md-card-title-text>
       </md-card-title>
       <md-divider></md-divider>
       <md-card-content>
-        <div layout="column">
-          <li ng-repeat="exercise in value">
-            {{ exercise.exercise_name }}
-          </li>
+        <div ng-repeat="exercise in value">
+          <div layout="row">
+            <div flex class="md-title">{{ exercise.exercise_name }}</div>
+          </div>
+          <div layout="row">
+            <div flex class="md-caption">Total Sets: {{exercise.sets.length}}</div>
+          </div>
+          <div layout="row">
+            <div flex class="md-caption">
+              Total Reps Completed: {{exercise.sets | map:'set_val' | sum}}
+            </div>
+          </div>
+          <div layout="row">
+            <div flex class="md-caption">
+              Goal Met: {{exercise.goal_met}}
+            </div>
+          </div>
         </div>
 
       </md-card-content>

@@ -255,9 +255,11 @@ conConApp
 
       // any time auth state changes, add the user data to scope
       $scope.auth.$onAuthStateChanged(function(firebaseUser) {
-        $scope.firebaseUser = firebaseUser;
-        var userId = Auth.$getAuth().uid;
-        $scope.user = ConData.getUserProfile(userId);
+          $scope.firebaseUser = firebaseUser;
+          if(firebaseUser){
+            var userId = Auth.$getAuth().uid;
+            $scope.user = ConData.getUserProfile(userId);
+          }
       });
 
       $scope.signOut = function(){
