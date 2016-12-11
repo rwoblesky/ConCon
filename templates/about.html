@@ -1,3 +1,84 @@
-<div layout="column">
-  About!
+<div layout="row" class="about-splash">
+  <md-toolbar class="md-tall" >
+    <h2 class="md-toolbar-tools">
+      <span>
+        <img src="img/logo-01.png">
+      </span>
+    </h2>
+  </md-toolbar>
+</div>
+<div layout="row" layout-padding >
+  <div class="md-display-2 text-center" flex>Workout. Anywhere. Anytime.</div>
+</div>
+<div layout="row" layout-padding>
+  <div class="md-headline text-center" flex>Bodyweight Workout Tracking</div>
+</div>
+<div layout="row" layout-padding>
+  <div flex >
+    <div layout="row" layout-padding layout-wrap class="text-center">
+      <div flex="100"><ng-md-icon icon="gavel" size="90" style="fill: #2196F3" class="about-splash"></ng-md-icon></div>
+      <div flex="100" class="md-title">Train</div>
+    </div>
+  </div>
+  <div flex >
+    <div layout="row" layout-padding layout-wrap class="text-center">
+      <div flex="100"><ng-md-icon icon="done_all" size="90" style="fill: #2196F3" class="about-splash"></ng-md-icon></div>
+      <div flex="100" class="md-title">Log</div>
+    </div>
+  </div>
+  <div flex >
+    <div layout="row" layout-padding layout-wrap class="text-center">
+      <div flex="100"><ng-md-icon icon="insert_emoticon" size="90" style="fill: #2196F3" class="about-splash"></ng-md-icon></div>
+      <div flex="100" class="md-title">Profit</div>
+    </div>
+  </div>
+</div>
+<div layout="row" layout-padding layout-wrap>
+  <span flex="100" class="md-title">
+    Unleash your true potential using ConCon. The ConCon bodyweight exercises will challenge every muscle in your body.
+    <br />
+    <br />
+  </span>
+  <span flex="100" class="md-sub-head">
+    Start with CC1: The Basics, here you'll train "The Big Six" and give your body the foundation it needs to be a powerful machine.
+    Once you're successfull with CC1, you're ready to start mixing in CC2: The Hardening and CC3: Explosive into your routine.
+    The exercises in CC2 and CC3 will hurt muscles you didn't even know you had, but mastering them will turn you into the ultimate example of true strength.
+    <br />
+    <br />
+  </span>
+  <span flex="100" class="md-sub-head".
+    Master the art of <i>one-handed pushups</i>, <i>handstands</i> and <i>single-leg squats</i> by training with ConCon. It's simple, a routine (CC1 for example) pick a body part and start at step one.
+    Keep training until you meet the goal then move on to the next step. <i>IF</i> you make it to the final step in each exercise, you will have accomplished more
+    than most atheletes can dream of in their stegnth and fitness conquests.
+    <br />
+    <br />
+  </span>
+</div>
+<div class="row">
+  <div flex class="about-splash">
+    <md-grid-list
+          md-cols="1" md-cols-sm="2" md-cols-md="3" md-cols-gt-md="6"
+          md-row-height-gt-md="1:1" md-row-height="4:3"
+          md-gutter="8px" md-gutter-gt-sm="4px" >
+
+      <md-grid-tile ng-repeat="tile in tiles"
+                    md-rowspan="{{tile.span.row}}"
+                    md-colspan="{{tile.span.col}}"
+                    md-colspan-sm="1"
+                    md-colspan-xs="1"
+                    ng-class="tile.background" >
+        <img err-src="img/no-image.jpg" ng-src="{{tile.src}}">
+        <md-grid-tile-footer><h3>{{tile.title}}</h3></md-grid-tile-footer>
+      </md-grid-tile>
+    </md-grid-list>  </div>
+  </div>
+</div>
+<div class="row" layout-padding>
+  <span flex class="md-caption">
+    <br />
+    <br />
+    <br />
+    *Disclaimer: This is a not for profit website to track the workouts found in Convict Conditioning series. All credit to Convict Condition for creating these programs and explanations.
+    This site is mearly assists in tracking the exercises. Also, always consult with a physcian or doctor before stating any exercise routine.
+  </span>
 </div>

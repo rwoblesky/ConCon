@@ -1,0 +1,60 @@
+<div layout="row" layout-padding>
+  <div flex="33">
+    <md-card layout-padding class="dashboard-card">
+      <md-card-title>
+        <md-card-title-text>
+          <span class="md-headline">CC1</span>
+          <span class="md-subhead">The Basics</span>
+        </md-card-title-text>
+      </md-card-title>
+      <md-divider></md-divider>
+      <md-card-content>
+        <div class="body-part-progress" ng-repeat="bodyPart in (bodyParts | filter:{cc:'1'} | highestLevels:goalsMet)" layout="column">
+          <span flex class="md-body-2">{{bodyPart.name}}</span>
+          <md-progress-linear flex md-mode="determinate" value="{{bodyPart.highestLevelCompleted * 10}}"
+                          ></md-progress-linear>
+        </div>
+
+      </md-card-content>
+    </md-card>
+  </div>
+  <div flex="33">
+
+    <md-card layout-padding class="dashboard-card">
+      <md-card-title>
+        <md-card-title-text>
+          <span class="md-headline">CC2</span>
+          <span class="md-subhead">Hardening</span>
+        </md-card-title-text>
+      </md-card-title>
+      <md-divider></md-divider>
+      <md-card-content>
+        <div class="body-part-progress" ng-repeat="bodyPart in (bodyParts | filter:{cc:'2'} | highestLevels:goalsMet)" layout="column">
+          <span flex class="md-body-2">{{bodyPart.name}}</span>
+          <md-progress-linear flex md-mode="determinate" value="{{bodyPart.highestLevelCompleted * 10}}"
+                          ></md-progress-linear>
+        </div>
+
+      </md-card-content>
+    </md-card>
+  </div>
+  <div flex="33">
+    <md-card layout-padding class="dashboard-card">
+      <md-card-title>
+        <md-card-title-text>
+          <span class="md-headline">CC3</span>
+          <span class="md-subhead">Explosive</span>
+        </md-card-title-text>
+      </md-card-title>
+      <md-divider></md-divider>
+      <md-card-content>
+        <div class="body-part-progress" ng-repeat="bodyPart in (bodyParts | filter:{cc:'3'} | highestLevels:goalsMet)" layout="column">
+          <span flex class="md-body-2">{{bodyPart.name}}</span>
+          <md-progress-linear flex md-mode="determinate" value="{{bodyPart.highestLevelCompleted * 10}}"
+                          ></md-progress-linear>
+        </div>
+
+      </md-card-content>
+    </md-card>
+  </div>
+</div>

@@ -10,28 +10,53 @@
     <p>Or Filter By:</p>
   </div>
   <exercise-filter></exercise-filter>
-  <div flex="50" flex-sm="100" ng-repeat="exercise in exercises | filter:searched">
-    <md-card class="exercise-card" layout-padding>
-      <md-card-title>
-        <md-card-title-text layout="row" layout-wrap>
-          <span class="md-headline" flex="100">
-            <span class="step-number" ng-cloak>{{exercise.step}}</span>
-            <span class="exercise-name" ng-cloak>{{exercise.exercise_name}}</span>
-          </span>
-          <span class="md-subhead" flex="100" ng-cloak>{{(exercise.body_part | getValById:bodyParts:'$id').name}}</span>
-        </md-card-title-text>
-      </md-card-title>
-      <md-divider></md-divider>
-      <md-card-content layout="row" layout-wrap>
-        <div flex="33">
-            <div ng-if="exercise.beg_reps" ng-cloak>Beg:{{exercise.beg_sets}} x {{exercise.beg_reps}}<br /></div>
-            <div ng-if="exercise.int_sets" ng-cloak>Int:{{exercise.int_sets}} x {{exercise.int_reps}}<br /></div>
-            <div ng-if="exercise.goal_sets" ng-cloak>Goal:{{exercise.goal_sets}} x {{exercise.goal_reps}}<br /></div>
+  <div flex="33" flex-md="50" flex-sm="100" flex-xs="100" ng-repeat="exercise in exercises | filter:searched">
+    <md-card class="exercise-card">
+      <div class="exercise-card-heading" ng-style="{'background':'url(../img/exercises/{{(exercise.body_part | getValById:bodyParts:'$id').type}}/{{exercise.body_part}}/{{exercise.step}}.jpg) no-repeat', 'background-size':'100%', 'background-position':'0px -50px'}">
+        <div class="darken-image">
+          <div class="heading-content" layout="row" layout-wrap>
+            <span flex class="md-display-1" flex="100" ng-cloak title="{{exercise.exercise_name}}" layout-padding>{{exercise.exercise_name}}</span>
+
+            <div flex="100" layout="row">
+              <span flex class="md-caption" flex="100" ng-cloak>
+                <span class="body-part-step-highlight">
+                  {{((exercise.step_id | getValById:exercises:'step_id').body_part | getValById:bodyParts:'$id').name}}: Step {{(exercise.step_id | getValById:exercises:'step_id').step}}
+                </span>
+              </span>
+            </div>
+          </div>
         </div>
-        <div flex="66" layout="row" layout-align="end center">
-          <img err-src="img/no-image.jpg" ng-src="img/exercises/{{(exercise.body_part | getValById:bodyParts:'$id').type}}/{{exercise.body_part}}/{{exercise.step}}.jpg" class="md-card-image">
+      </div>
+      <md-card-content layout-padding>
+        <div layout="row">
+          <div flex="33">
+            <div layout="column">
+              <div class="exercise-card-tip md-title" flex ng-hide="!exercise.beg_reps">{{exercise.beg_sets}} x {{exercise.beg_reps}}</div>
+              <div class="exercise-card-tip md-title" flex ng-show="!exercise.beg_reps">N/A</div>
+              <div class="exercise-card-tip-label md-caption" flex>Beg. Goal</div>
+            </div>
+          </div>
+          <div flex="33">
+            <div layout="column">
+              <div class="exercise-card-tip md-title" flex ng-hide="!exercise.int_sets">{{exercise.int_sets}} x {{exercise.int_reps}}</div>
+              <div class="exercise-card-tip md-title" flex ng-show="!exercise.int_sets">N/A</div>
+              <div class="exercise-card-tip-label md-caption" flex>Int. Goal</div>
+            </div>
+          </div>
+          <div flex="33">
+            <div layout="column">
+              <div class="exercise-card-tip md-title" flex ng-hide="!exercise.goal_sets">{{exercise.goal_sets}} x {{exercise.goal_reps}}</div>
+              <div class="exercise-card-tip md-title" flex ng-show="!exercise.goal_sets">N/A</div>
+              <div class="exercise-card-tip-label md-caption" flex>Master Goal</div>
+            </div>
+          </div>
+
         </div>
       </md-card-content>
+      <md-card-actions layout="row" layout-align="end center">
+        <md-button class="md-primary" ng-click="showExercise($event, exercise.exercise_name)">Exercise Info</md-button>
+      </md-card-actions>
     </md-card>
+
   </div>
 </div>

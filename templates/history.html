@@ -1,0 +1,21 @@
+<div layout="row" layout-padding layout-wrap>
+  <div flex="50" ng-repeat="(key, value) in history | groupBy:'time'">
+    <md-card layout-padding class="history-card" >
+      <md-card-title>
+        <md-card-title-text>
+          <span class="md-headline">{{ key }}</span>
+          <span class="md-subhead"></span>
+        </md-card-title-text>
+      </md-card-title>
+      <md-divider></md-divider>
+      <md-card-content>
+        <div layout="column">
+          <li ng-repeat="exercise in value">
+            {{ exercise.exercise_name }}
+          </li>
+        </div>
+
+      </md-card-content>
+    </md-card>
+  </div>
+</div>

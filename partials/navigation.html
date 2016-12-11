@@ -1,29 +1,21 @@
 <md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')">
   <md-toolbar flex class="md-tall md-hue-2">
     <span class="flex"></span>
-    <div layout="column" class="md-toolbar-tools-bottom inset" ng-show="!loggedIn">
+    <div layout="column" class="md-toolbar-tools-bottom inset" ng-hide="firebaseUser">
       <div flex layout="row" layout-align="center center">
         <img src="img/logo-01.png">
       </div>
     </div>
-    <div layout="column" class="md-toolbar-tools-bottom inset" ng-show="loggedIn">
+    <div layout="column" class="md-toolbar-tools-bottom inset" ng-show="firebaseUser">
       <div flex layout="row" layout-align="center center">
         <img src="img/logo-01.png">
       </div>
       <div flex class="user user-name" ng-cloak>{{user.first_name}} {{user.last_name}}</div>
-      <div flex class="user user-email" ng-cloak>{{userEmail}}</div>
+      <div flex class="user user-email" ng-cloak>{{user.email}}</div>
     </div>
   </md-toolbar>
   <md-list class="navigation-list">
-    <md-item ng-show="loggedIn">
-      <md-item-content>
-        <md-button ui-sref="home" ui-sref-active="selected">
-          <ng-md-icon icon="trending_up"></ng-md-icon>
-          Dashboard
-        </md-button>
-      </md-item-content>
-    </md-item>
-    <md-item ng-show="loggedIn">
+    <md-item ng-show="firebaseUser">
       <md-item-content>
         <md-button ui-sref="log" ui-sref-active="selected">
           <ng-md-icon icon="note_add" ></ng-md-icon>
@@ -31,11 +23,28 @@
         </md-button>
       </md-item-content>
     </md-item>
-    <md-item ng-show="loggedIn">
+    <md-item ng-show="firebaseUser">
       <md-item-content>
-        <md-button ui-sref="log.recent" ui-sref-active="selected">
+        <md-button ui-sref="dashboard" ui-sref-active="selected">
+          <ng-md-icon icon="trending_up"></ng-md-icon>
+          Dashboard
+        </md-button>
+      </md-item-content>
+    </md-item>
+
+    <md-item ng-show="firebaseUser">
+      <md-item-content>
+        <md-button ui-sref="history" ui-sref-active="selected">
           <ng-md-icon icon="history" ></ng-md-icon>
           History
+        </md-button>
+      </md-item-content>
+    </md-item>
+    <md-item>
+      <md-item-content>
+        <md-button ui-sref="about" ui-sref-active="selected">
+          <ng-md-icon icon="info" ></ng-md-icon>
+          About
         </md-button>
       </md-item-content>
     </md-item>
@@ -48,7 +57,7 @@
       </md-item-content>
     </md-item>
     <md-divider></md-divider>
-    <md-item ng-show="loggedIn">
+    <md-item ng-show="firebaseUser">
       <md-item-content>
         <md-button ui-sref="profile" ui-sref-active="selected">
           <ng-md-icon icon="person" ></ng-md-icon>
@@ -56,15 +65,7 @@
         </md-button>
       </md-item-content>
     </md-item>
-    <md-item>
-      <md-item-content>
-        <md-button ui-sref="faq" ui-sref-active="selected">
-          <ng-md-icon icon="question_answer"></ng-md-icon>
-          F.A.Q
-        </md-button>
-      </md-item-content>
-    </md-item>
-    <md-item ng-show="!loggedIn">
+    <md-item ng-hide="firebaseUser">
       <md-item-content>
         <md-button ui-sref="login" ui-sref-active="selected">
           <ng-md-icon icon="login" ></ng-md-icon>
@@ -72,7 +73,7 @@
         </md-button>
       </md-item-content>
     </md-item>
-    <md-item ng-show="!loggedIn">
+    <md-item ng-hide="firebaseUser">
       <md-item-content>
         <md-button ui-sref="signup" ui-sref-active="selected">
           <ng-md-icon icon="person_add" ></ng-md-icon>
@@ -80,9 +81,9 @@
         </md-button>
       </md-item-content>
     </md-item>
-    <md-item ng-show="loggedIn">
+    <md-item ng-show="firebaseUser">
       <md-item-content>
-        <md-button ng-click="logOut()" ui-sref-active="selected">
+        <md-button ng-click="signOut()" ui-sref-active="selected">
           <ng-md-icon icon="logout" ></ng-md-icon>
           Log Out
         </md-button>

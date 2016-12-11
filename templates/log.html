@@ -1,37 +1,72 @@
-<div id="log" layout="row" layout-wrap layout-sm="row">
-  <md-toolbar>
-    <div class="md-toolbar-tools">
-      <md-datepicker ng-model="logDate" md-placeholder="Enter date"></md-datepicker>
-      <md-button flex class="md-fab md-fab-bottom-right" aria-label="Add Exercise" ng-click="showAdvanced($event)">
-        <ng-md-icon icon="add"></ng-md-icon>
-      </md-button>
-    </div>
-  </md-toolbar>
+<div id="log">
+  <div layout="row">
+    <md-toolbar flex="100">
+      <div class="md-toolbar-tools">
+        <md-datepicker ng-model="logDate" md-placeholder="Enter date"></md-datepicker>
+        <md-button flex class="md-fab md-fab-bottom-right" aria-label="Add Exercise" ng-click="showAdvanced($event)">
+          <ng-md-icon icon="add"></ng-md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+  </div>
+  <div layout="row" layout-wrap>
+    <div flex="33" flex-md="50" flex-sm="100" flex-xs="100" ng-repeat="exercise in todaysLog">
+      <md-card class="exercise-card">
+        <div class="exercise-card-heading" ng-style="{'background':'url(../img/exercises/{{(exercise.exercise_id | getValById:exercises:'$id').type}}/{{(exercise.exercise_id | getValById:exercises:'$id').body_part}}/{{(exercise.exercise_id | getValById:exercises:'$id').step}}.jpg) no-repeat', 'background-size':'100%', 'background-position':'0px -50px'}">
+          <div class="darken-image">
+            <div class="heading-content" layout="row" layout-wrap>
+              <span flex class="md-display-1" flex="100" ng-cloak title="{{exercise.exercise_name}}" layout-padding>{{exercise.exercise_name}}</span>
 
-  <div flex="100" layout="row" layout-sm="column" layout-wrap>
-    <div class="click panel circle" ng-class="{'flip':exercise.isFlipped}" flex="50" flex-sm="100" ng-repeat="exercise in todaysLog">
-      <md-card class="exercise-card" layout-padding>
-        <md-card-title>
-          <md-card-title-text layout="row" layout-wrap>
-            <span class="md-headline" flex="100">
-              <span class="step-number" ng-cloak>{{(exercise.step_id | getValById:exercises:'step_id').step}}</span>
-              <span class="exercise-name" ng-cloak>{{exercise.exercise_name}}</span>
-            </span>
-            <span class="md-subhead" flex="100" ng-cloak>{{((exercise.step_id | getValById:exercises:'step_id').body_part | getValById:bodyParts:'$id').name}}</span>
-          </md-card-title-text>
-        </md-card-title>
-        <md-divider></md-divider>
-        <md-card-content>
-          <div class="row">
-            <ng-md-icon flex="20" icon="done" style="fill:green" ng-show="exercise.goal_met"></ng-md-icon>
-            <ng-md-icon flex="20" icon="clear" style="fill:red" ng-show="!exercise.goal_met"></ng-md-icon>
-            <span flex="80" ng-cloak>Goal: {{(exercise.step_id | getValById:exercises:'step_id').goal_sets}} x {{(exercise.step_id | getValById:exercises:'step_id').goal_reps}}</span>
+              <div flex="100" layout="row">
+                <span flex class="md-caption" flex="100" ng-cloak>
+                  <span class="body-part-step-highlight">
+                    {{((exercise.step_id | getValById:exercises:'step_id').body_part | getValById:bodyParts:'$id').name}}: Step {{(exercise.step_id | getValById:exercises:'step_id').step}}
+                  </span>
+                </span>
+              </div>
+            </div>
           </div>
-          <md-input-container class="md-block" ng-repeat="set in exercise.sets">
-            <label ng-cloak>Set No: {{set.set_no}}</label>
-            <input required type="number" step="any" ng-model="set.set_val" min="0"
-              max="200" ng-change="change(exercise)" ng-model-options="{ debounce: 750 }"/>
-          </md-input-container>
+        </div>
+        <md-card-content layout-padding>
+          <div layout="row">
+            <div flex="33">
+              <div layout="column">
+                <div class="exercise-card-tip md-title" flex>{{exercise.highestReps}}</div>
+                <div class="exercise-card-tip-label md-caption" flex>Reps Record</div>
+              </div>
+            </div>
+            <div flex="33">
+              <div layout="column">
+                <div class="exercise-card-tip md-title" flex>{{exercise.lastExercised | date:'MM/dd/yy'}}</div>
+                <div class="exercise-card-tip-label md-caption" flex>Last Exercised</div>
+              </div>
+            </div>
+            <div flex="33">
+              <div layout="column">
+                <div class="exercise-card-tip md-title" flex ng-hide="!(exercise.step_id | getValById:exercises:'step_id').goal_sets">{{(exercise.step_id | getValById:exercises:'step_id').goal_sets}} x {{(exercise.step_id | getValById:exercises:'step_id').goal_reps}}</div>
+                <div class="exercise-card-tip md-title" flex ng-show="!(exercise.step_id | getValById:exercises:'step_id').goal_sets">N/A</div>
+                <div class="exercise-card-tip-label md-caption" flex>Exercise Goal</div>
+              </div>
+            </div>
+          </div>
+          <div layout="row">
+            <span flex="100">
+              <md-divider></md-divider>
+            </span>
+          </div>
+
+          <div layout="row" ng-repeat="set in exercise.sets">
+              <md-input-container flex="15" class="md-block" flex-gt-xs>
+                 <label>Recent</label>
+                 <input ng-model="(set.set_no | recentSet:exercise.recentSets).set_val" disabled ng-if="(set.set_no | recentSet:exercise.recentSets).set_val">
+                 <input value="N/A" disabled ng-if="!(set.set_no | recentSet:exercise.recentSets).set_val">
+             </md-input-container>
+             <md-input-container flex="85" class="md-block" flex-gt-xs>
+                <label ng-cloak>Set No: {{set.set_no}}</label>
+                <input required type="number" step="any" ng-model="set.set_val" min="0"
+                  max="200" ng-change="change(exercise)" ng-model-options="{ debounce: 750 }"/>
+              </md-input-container>
+          </div>
           <md-content ng-show="exercise.goal_met">
             Exercise Goal Met!
           </md-content>

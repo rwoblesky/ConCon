@@ -1,22 +1,24 @@
 <div layout="column">
-  <md-content layout-padding class="autoScroll">
-    <md-input-container class="md-icon-float md-block">
-      <!-- Use floating label instead of placeholder -->
-      <label>First Name</label>
-      <ng-md-icon icon="person"></ng-md-icon>
-      <input ng-model="user.first_name" type="text">
-    </md-input-container>
-    <md-input-container class="md-icon-float md-block">
-      <!-- Use floating label instead of placeholder -->
-      <label>Last Name</label>
-      <ng-md-icon icon="person_outline"></ng-md-icon>
-      <input ng-model="user.last_name" type="text">
-    </md-input-container>
-    <md-input-container class="md-block">
-      <!-- Use floating placeholder instead of label -->
-      <ng-md-icon icon="quick_contacts_mail"></ng-md-icon>
-      <input ng-model="user.email" type="email" placeholder="Email" disabled>
-    </md-input-container>
-    <md-button class="md-raised md-primary" ng-click="saveProfile()">Save Changes</md-button>
-  </md-content>
+  <form name='profileForm' ng-submit="saveProfile()">
+    <md-content layout-padding class="autoScroll">
+      <md-input-container class="md-icon-float md-block">
+        <!-- Use floating label instead of placeholder -->
+        <label>First Name</label>
+        <ng-md-icon icon="person"></ng-md-icon>
+        <input ng-model="user.first_name" type="text">
+      </md-input-container>
+      <md-input-container class="md-icon-float md-block">
+        <!-- Use floating label instead of placeholder -->
+        <label>Last Name</label>
+        <ng-md-icon icon="person_outline"></ng-md-icon>
+        <input ng-model="user.last_name" type="text">
+      </md-input-container>
+      <md-input-container class="md-block">
+        <!-- Use floating placeholder instead of label -->
+        <ng-md-icon icon="quick_contacts_mail"></ng-md-icon>
+        <input ng-model="user.email" type="email" placeholder="Email" disabled>
+      </md-input-container>
+      <md-button class="md-raised md-primary" ng-disabled="!profileForm.$dirty" type="submit">Save Changes</md-button>
+    </md-content>
+  </form>
 </div>
