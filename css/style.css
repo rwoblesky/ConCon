@@ -136,3 +136,12 @@ md-grid-list img{
 .about-splash md-grid-list md-grid-tile md-grid-tile-footer{
   background: rgba(0,0,0,.6);
 }
+md-input-container.no-margin {
+  margin: 0px;
+}
+.exercise-completed {
+  color: rgb(21,101,192);
+}
+.exercise-not-completed {
+  color: rgb(21,101,192);
+}

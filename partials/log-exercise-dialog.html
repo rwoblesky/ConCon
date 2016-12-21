@@ -11,10 +11,18 @@
   <md-dialog-content layout-padding>
     <p>Use the filters below to narrow the exercise list OR select a body part to see the highest level completed in that area.</p>
     <exercise-filter></exercise-filter>
-    <md-input-container>
+    <md-input-container class="md-block">
       <label>Exercise</label>
       <md-select ng-model="selectedExercise">
-        <md-option ng-value="exercise.exercise_name" ng-repeat="exercise in exercises | filter:searched">{{ exercise.exercise_name }}</md-option>
+        <md-option ng-value="exercise.exercise_name" ng-repeat="exercise in exercises | filter:searched">
+          <md-icon ng-show="{{exercise.$id | exerciseGoalMet:goalsMet}}">
+            <ng-md-icon class="exercise-completed" icon="check_box" ></ng-md-icon>
+          </md-icon>
+          <md-icon ng-hide="{{exercise.$id | exerciseGoalMet:goalsMet}}">
+            <ng-md-icon class="exercise-not-completed" icon="check_box_outline_blank" ></ng-md-icon>
+          </md-icon>
+          {{ exercise.exercise_name }}
+        </md-option>
       </md-select>
     </md-input-container>
     <div layout="row" layout-align="end center">

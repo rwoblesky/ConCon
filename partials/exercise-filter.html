@@ -1,6 +1,16 @@
-<div flex="100" layout="row" layout-sm="row" layout-wrap>
-  <div flex="33" flex-sm="100">
-    <md-input-container>
+<div flex="100" layout="row" layout-wrap>
+  <div flex="25" flex-sm="50" flex-xs="50">
+    <md-input-container class="md-block no-margin">
+      <label>CC Level</label>
+      <md-select ng-model="searched.cc">
+        <md-option ng-value="1">CC 1: The Basics</md-option>
+        <md-option ng-value="2">CC 2: Hardening</md-option>
+        <md-option ng-value="3">CC 3: Explosive</md-option>
+      </md-select>
+    </md-input-container>
+  </div>
+  <div flex="25" flex-sm="50" flex-xs="50">
+    <md-input-container class="md-block no-margin">
       <label>Exercise Type</label>
       <md-select ng-model="searched.type">
          <md-option ng-repeat="type in exerciseTypes" value="{{type.val}}">
@@ -9,16 +19,16 @@
       </md-select>
     </md-input-container>
   </div>
-  <div flex="33" flex-sm="100">
-    <md-input-container>
-      <label>Filter Body Part</label>
+  <div flex="25" flex-sm="50" flex-xs="50">
+    <md-input-container class="md-block no-margin">
+      <label>Body Part</label>
       <md-select ng-model="searched.body_part">
         <md-option ng-value="bodypart.$id" ng-repeat="bodypart in bodyParts | filter:searched.type">{{ bodypart.name }}</md-option>
       </md-select>
     </md-input-container>
   </div>
-  <div flex="33" flex-sm="100">
-    <md-input-container>
+  <div flex="25" flex-sm="50" flex-xs="50">
+    <md-input-container class="md-block no-margin">
       <label>Step</label>
       <md-select ng-model="searched.step">
         <md-option ng-value="1">1</md-option>

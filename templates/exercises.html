@@ -1,13 +1,16 @@
 <div layout="row" id="exercises" layout-wrap layout-padding layout-sm="row">
   <div flex="100">
-    <md-input-container class="md-block">
+
+    <md-input-container class="md-block no-margin">
       <!-- Use floating placeholder instead of label -->
-      <ng-md-icon icon="search" ></ng-md-icon>
+      <md-icon>
+        <ng-md-icon icon="search" ></ng-md-icon>
+      </md-icon>
       <input ng-model="searched.$" type="text" placeholder="Search Exercises">
     </md-input-container>
   </div>
   <div flex="100">
-    <p>Or Filter By:</p>
+    Filters:
   </div>
   <exercise-filter></exercise-filter>
   <div flex="33" flex-md="50" flex-sm="100" flex-xs="100" ng-repeat="exercise in exercises | filter:searched">

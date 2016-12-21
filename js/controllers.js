@@ -86,12 +86,14 @@ conConApp
       }
     })
 })
-.run(['$rootScope', '$state', 'Auth', '$mdSidenav', function ($rootScope, $state, $mdSidenav) {
+.run(['$rootScope', '$state', '$mdSidenav', function ($rootScope, $state, $mdSidenav) {
+
     $rootScope.toggleSidenav = function(menuId) {
       $mdSidenav(menuId).toggle();
     };
     $rootScope.$on('$stateChangeStart', function (event, toState) {
      $rootScope.pageTitle = toState.page_name;
+
     });
     $rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
       // We can catch the error thrown when the $requireSignIn promise is rejected
@@ -113,12 +115,31 @@ conConApp
     var oneDay = 24 * oneHour;
     return{
        getExercises : function(){
-         var ref = firebase.database().ref().child("exercises");
-         return $firebaseArray(ref);
+        var ref = firebase.database().ref().child("exercises");
+        var exercises = $firebaseArray(ref);
+        return exercises;
+        //return $firebaseArray(ref);
+        /*ref.child('body_parts').once('value', function(bodyParts) {
+          ref.child('exercises').once('value', function(exercises) {
+            console.log(bodyParts, exercises);
+            var bp = bodyParts.val();
+            var e = exercises.val();
+            for(var i = 0; i < e.length; i++){
+              if(e[i]){
+                e[i]['cc'] = bp[e[i].body_part].cc;
+              }
+            }
+            return e;
+           });
+        });*/
        },
        getBodyParts : function(){
          var ref = firebase.database().ref().child("body_parts");
          return $firebaseArray(ref);
+       },
+       getBodyPartsObject : function(){
+         var ref = firebase.database().ref().child("body_parts");
+         return $firebaseObject(ref);
        },
        getUserProfile : function(userId){
          var ref = firebase.database().ref().child("user_data").child(userId).child("profile");
@@ -138,7 +159,7 @@ conConApp
        },
        getHistory : function(userId){
          var ref = firebase.database().ref().child("user_data").child(userId);
-         return $firebaseArray(ref);
+         return $firebaseArray(ref.orderByChild("time"));
        },
        getGoalsMet : function(userId){
          var ref = firebase.database().ref().child("user_data").child(userId).child("goals_met");
@@ -245,12 +266,23 @@ conConApp
     return bodyParts;
   }
 })
+.filter('exerciseGoalMet', function(){
+  return function(exerciseId, goalsMet){//returns True / False whether a goal is met for a particular exercise
+    for(var i = 0; i < goalsMet.length; i++){
+      if(goalsMet[i].exercise_id === exerciseId){
+        return true;
+      }
+    }
+
+    return false;
+  }
+})
 .directive('conNavigation', function(){
   return {
     restrict: 'E',
     replace:true,
     templateUrl: 'partials/navigation.html',
-    controller: function($scope, $state, Auth, ConData){
+    controller: function($scope, $state, $mdSidenav, Auth, ConData){
       $scope.auth = Auth;
 
       // any time auth state changes, add the user data to scope
@@ -266,6 +298,10 @@ conConApp
         Auth.$signOut();
         $state.go('login');
       }
+
+      $scope.close = function (menuId) {
+        $mdSidenav(menuId).close();
+      };
     }
   };
 })
@@ -395,7 +431,21 @@ conConApp
     $scope.todaysLog = ConData.getToday(userId, +moment($scope.logDate).startOf('day'));
   });
 
-  $scope.exercises = ConData.getExercises();
+  $scope.bodyParts = ConData.getBodyParts();
+
+  var exercises = ConData.getExercises();
+
+  exercises.$loaded().then(function(exercises){
+    var bp = ConData.getBodyPartsObject();
+    bp.$loaded().then(function(bodyParts){
+      for(var i = 0; i < exercises.length; i++){
+        if(exercises[i]){
+          exercises[i].cc = bodyParts[exercises[i].body_part].cc;
+        }
+      }
+      $scope.exercises = exercises;
+    });
+  });
 
   $scope.bodyParts = ConData.getBodyParts();
 
@@ -580,9 +630,23 @@ conConApp
     });
   };
 
-
-  $scope.exercises = ConData.getExercises();
   $scope.bodyParts = ConData.getBodyParts();
+
+  var exercises = ConData.getExercises();
+
+  exercises.$loaded().then(function(exercises){
+    var bp = ConData.getBodyPartsObject();
+    bp.$loaded().then(function(bodyParts){
+      for(var i = 0; i < exercises.length; i++){
+        if(exercises[i]){
+          exercises[i].cc = bodyParts[exercises[i].body_part].cc;
+        }
+      }
+      $scope.exercises = exercises;
+    });
+  });
+
+
 })
 .controller('historyCtrl', function ($scope, Auth, ConData) {
   var userId = Auth.$getAuth().uid;
