@@ -5,7 +5,7 @@ conConApp
   $mdThemingProvider.theme('default')
   .primaryPalette('blue')
   .accentPalette('light-blue');
-  $urlRouterProvider.otherwise("/log");
+  $urlRouterProvider.otherwise("/about");
   //
   // Now set up the states
   $stateProvider
@@ -146,7 +146,7 @@ conConApp
          return $firebaseObject(ref);
        },
        getToday : function(userId, today){
-         var ref = firebase.database().ref().child("user_data").child(userId);
+         var ref = firebase.database().ref().child("user_data").child(userId).child("exercise_log");
          return $firebaseArray(ref.orderByChild("time").equalTo(today));
        },
        getHighestLevel : function(userId, exerciseId){
@@ -158,7 +158,7 @@ conConApp
          return $firebaseArray(ref.orderByChild("exercise_id").equalTo(exerciseId));
        },
        getHistory : function(userId){
-         var ref = firebase.database().ref().child("user_data").child(userId);
+         var ref = firebase.database().ref().child("user_data").child(userId).child("exercise_log");
          return $firebaseArray(ref.orderByChild("time"));
        },
        getGoalsMet : function(userId){
@@ -402,11 +402,12 @@ conConApp
 
 })
 .controller('profileCtrl', function ($scope, $state, Auth, ConData) {
-  var userId = Auth.$getAuth().uid;
+  var auth = Auth.$getAuth();
+  var userId = auth.uid;
   $scope.user = ConData.getUserProfile(userId);
   $scope.user.$loaded(function(){
     if(!$scope.user.email){
-      $scope.user.email = Auth.getUserEmail();
+      $scope.user.email = auth.email;
       $scope.user.$save();
     }
   });

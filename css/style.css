@@ -7,6 +7,9 @@ html {
 .text-center {
   text-align: center;
 }
+.text-right {
+  text-align: right;
+}
 .navigation-list {
   color: grey;
 }
@@ -144,4 +147,8 @@ md-input-container.no-margin {
 }
 .exercise-not-completed {
   color: rgb(21,101,192);
+}
+.about-splash md-toolbar#mobile-brand.md-tall{
+  height: 158px;
+  min-height: 158px;
 }

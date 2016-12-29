@@ -1,15 +1,22 @@
-<md-content layout-padding class="autoScroll">
-
-  <md-input-container class="md-block">
-    <ng-md-icon icon="email" ></ng-md-icon>
-    <input ng-model="email" type="email" placeholder="Email (required)" ng-required="true">
-  </md-input-container>
-  <md-input-container class="md-block">
-    <ng-md-icon icon="vpn_key" ></ng-md-icon>
-    <input ng-model="password" type="password" placeholder="Password (required)" ng-required="true">
-  </md-input-container>
-  <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
-    <md-button ui-sref="login" class="md-raised">Log In</md-button>
-    <md-button class="md-raised md-primary"  ng-click="createUser()">Sign Up!</md-button>
-  </section>
-</md-content>
+<div layout="column" ng-cloak>
+  <br/>
+  <md-content layout-padding class="autoScroll">
+    <p>ConCon will never, ever release your personal information. This information is soley used to organize and track your exercise information.</p>
+    <md-input-container class="md-block">
+    <md-icon>
+      <ng-md-icon icon="email" ></ng-md-icon>
+    </md-icon>
+      <input ng-model="email" type="email" placeholder="Email (required)" ng-required="true">
+    </md-input-container>
+    <md-input-container class="md-block">
+    <md-icon>
+      <ng-md-icon icon="vpn_key" ></ng-md-icon>
+    </md-icon>
+      <input ng-model="password" type="password" placeholder="Password (required)" ng-required="true">
+    </md-input-container>
+    <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+      <md-button ui-sref="login" class="md-raised">Log In</md-button>
+      <md-button class="md-raised md-primary"  ng-click="createUser()">Sign Up!</md-button>
+    </section>
+  </md-content>
+</div>
