@@ -85,6 +85,19 @@ conConApp
         }]
       }
     })
+    .state('routines', {
+      url: '/routines',
+      page_name: 'Routines',
+      templateUrl: 'templates/routines.html',
+      controller: 'routinesCtrl',
+      resolve: {
+        "currentAuth": ["Auth", function(Auth) {
+        // $requireSignIn returns a promise so the resolve waits for it to complete
+        // If the promise is rejected, it will throw a $stateChangeError (see above)
+          return Auth.$requireSignIn();
+        }]
+      }
+    })
 })
 .run(['$rootScope', '$state', '$mdSidenav', function ($rootScope, $state, $mdSidenav) {
 
@@ -141,6 +154,20 @@ conConApp
          var ref = firebase.database().ref().child("body_parts");
          return $firebaseObject(ref);
        },
+       getSharedRoutines : function(){
+         /*
+         shared_routines {
+          label: 'Example'
+          body_parts: [{
+            body_part: 'chest'
+            use_highest_step_for_default: true
+            custom_default_step: ''
+          }]
+        }
+         */
+         var ref = firebase.database().ref().child("shared_routines");
+         return $firebaseArray(ref);
+       },
        getUserProfile : function(userId){
          var ref = firebase.database().ref().child("user_data").child(userId).child("profile");
          return $firebaseObject(ref);
@@ -154,11 +181,11 @@ conConApp
          return $firebaseArray(ref.orderByChild("exercise_id").equalTo(exerciseId));
        },
        getRecentExercises : function(userId, exerciseId){//TODO: Write this function, will be added to the exercise card
-         var ref = firebase.database().ref().child("user_data").child(userId);
+         var ref = firebase.database().ref().child("user_data").child(userId).child("exercise_log");
          return $firebaseArray(ref.orderByChild("exercise_id").equalTo(exerciseId));
        },
        getHistory : function(userId){
-         var ref = firebase.database().ref().child("user_data").child(userId).child("exercise_log");
+         var ref = firebase.database().ref().child("user_data").child(userId);
          return $firebaseArray(ref.orderByChild("time"));
        },
        getGoalsMet : function(userId){
@@ -454,6 +481,8 @@ conConApp
 
   $scope.todaysLog = ConData.getToday(userId, +moment($scope.logDate).startOf('day'));
 
+  $scope.sharedRoutines = ConData.getSharedRoutines();
+
   $scope.showExercise = function(ev, exercise) {
     $scope.dialogExercise = $filter('getValById')(exercise, $scope.exercises, "exercise_name");
 
@@ -513,18 +542,16 @@ conConApp
     $scope.addToWorkout = function(){
       if($scope.selectedExercise){
         var exercise = $filter('getValById')($scope.selectedExercise, $scope.exercises, "exercise_name");
-        var recents = ConData.getRecentExercises(userId, exercise.$id);
-        recents.$loaded().then(function(recents){
-
-          console.log(recents.length);
+        var recentSets = ConData.getRecentExercises(userId, exercise.$id);
+        recentSets.$loaded().then(function(recents){
           $scope.todaysLog.$add({
             time: +moment($scope.logDate).startOf('day'),
             exercise_name : $scope.selectedExercise,
             step_id   : exercise.step_id,
             exercise_id : exercise.$id,
             highestReps : $filter('highestReps')(recents),
-            recentSets : (recents.length > 0) ? recents.pop().sets : [],
-            lastExercised : (recents.length > 0) ? recents.pop().time : 'N/A',
+            recentSets : (recents.length > 0) ? recents[0].sets : [],
+            lastExercised : (recents.length > 0) ? recents[0].time : 'N/A',
             sets: [{
               set_no: 1,
               set_val: 0
@@ -576,7 +603,6 @@ conConApp
 
 
   $scope.addSet = function(exercise){
-    console.log('add set to ' +  exercise);
     exercise.sets.push({
       set_no: exercise.sets.length + 1,
       set_val: 0
@@ -587,6 +613,67 @@ conConApp
       console.log("Error:", error)
     });
   };
+
+  $scope.deleteExercise = function(ev, exercise) {
+    // Appending dialog to document.body to cover sidenav in docs app
+    var confirm = $mdDialog.confirm()
+          .title('Are you sure you want to remove '+ exercise.exercise_name +' from the Log?')
+          .textContent('This cannot be undone and any data recorded against this exercise will be permanently lost')
+          .targetEvent(ev)
+          .ok('Delete')
+          .cancel('Cancel');
+
+    $mdDialog.show(confirm).then(function() {
+      $scope.todaysLog.$remove(exercise);
+    }, function() {
+      console.log('Nevermind')
+    });
+
+  };
+
+  function addToLog(userId, exercise){
+    var recentSets = ConData.getRecentExercises(userId, exercise.$id);
+    recentSets.$loaded().then(function(recents){
+      $scope.todaysLog.$add({
+        time: +moment($scope.logDate).startOf('day'),
+        exercise_name : exercise.exercise_name,
+        step_id   : exercise.step_id,
+        exercise_id : exercise.$id,
+        highestReps : $filter('highestReps')(recents),
+        recentSets : (recents.length > 0) ? recents[0].sets : [],
+        lastExercised : (recents.length > 0) ? recents[0].time : 'N/A',
+        sets: [{
+          set_no: 1,
+          set_val: 0
+        }],
+        goal_met: false
+      });
+      $mdDialog.hide();
+    });
+  }
+
+  $scope.useRoutine = function(routine){
+    for(var i = 0; i < routine.body_parts.length; i++){
+      var highestLevel = {};
+          highestLevel.step = 0;
+      for(var j = 0; j < $scope.goalsMet.length; j++){
+        console.log($scope.goalsMet[j].step, highestLevel.step)
+        if($scope.goalsMet[j].body_part === routine.body_parts[i].body_part && $scope.goalsMet[j].step > highestLevel.step){
+          highestLevel.details = $scope.goalsMet[j];
+          highestLevel.step = $scope.goalsMet[j].step;
+        }
+      }
+      console.log(highestLevel);
+      for(var j = 0; j < $scope.exercises.length; j++){
+        if($scope.exercises[j].body_part === routine.body_parts[i].body_part && $scope.exercises[j].step === highestLevel.step + 1){
+          var index = j;
+          console.log($scope.exercises[j]);
+          //add to log here
+          addToLog(userId, $scope.exercises[j]);
+        }
+      }
+    }
+  }
 
 
 })
@@ -669,4 +756,32 @@ conConApp
     {"title":"Shoulder Stand Squats","src":"img/exercises/strength/legs/1.jpg" , "background":"yellow","span":{"row":1,"col":1}}
   ];
 
+})
+.controller('routinesCtrl', function ($scope, Auth, ConData) {
+  $scope.bodyParts = ConData.getBodyParts();
+
+  $scope.sharedRoutines = ConData.getSharedRoutines();
+
+  //helper to add new shared routines (while DB permissions allow)
+  /*$scope.sharedRoutines.$add({
+    label: 'CC1: The Basics - A',
+    body_parts: [{
+      body_part: 'chest',
+      cc: '1',
+      use_highest_step_for_default: true,
+      custom_default_step: ''
+    },
+    {
+      body_part: 'core_front',
+      cc: '1',
+      use_highest_step_for_default: true,
+      custom_default_step: ''
+    },
+    {
+      body_part: 'legs',
+      cc: '1',
+      use_highest_step_for_default: true,
+      custom_default_step: ''
+    }]
+  });*/
 });

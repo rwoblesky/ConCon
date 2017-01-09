@@ -10,6 +10,9 @@ html {
 .text-right {
   text-align: right;
 }
+.pointer {
+  cursor: pointer;
+}
 .navigation-list {
   color: grey;
 }
@@ -84,7 +87,7 @@ md-toolbar .user {
   overflow: hidden;
 }
 .exercise-card-heading .darken-image {
-  background-color:  rgba(21, 101, 192, 0.5);
+  background-color:  rgba(0, 0, 0, 0.5);
   top: 0;
   left: 0;
   width: 100%;
@@ -130,7 +133,6 @@ md-toolbar .user {
 ng-md-icon.about-splash  {
   height: 90px;
   width: 90px;
-
 }
 md-grid-list img{
   width: auto;
@@ -151,4 +153,18 @@ md-input-container.no-margin {
 .about-splash md-toolbar#mobile-brand.md-tall{
   height: 158px;
   min-height: 158px;
+}
+.exercise-card md-divider {
+  margin-bottom: 15px;
+}
+/* Routines */
+#routines .md-button.md-fab.md-fab-bottom-right {
+  top: auto;
+  right: 20px;
+  bottom: 20px;
+  left: auto;
+  position: fixed;
+}
+#routines .add-routine {
+  padding: 15px;
 }

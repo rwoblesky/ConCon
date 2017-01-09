@@ -8,25 +8,97 @@
       </md-button>
     </div>
   </md-toolbar>
-  <md-dialog-content layout-padding>
-    <p>Use the filters below to narrow the exercise list OR select a body part to see the highest level completed in that area.</p>
-    <exercise-filter></exercise-filter>
-    <md-input-container class="md-block">
-      <label>Exercise</label>
-      <md-select ng-model="selectedExercise">
-        <md-option ng-value="exercise.exercise_name" ng-repeat="exercise in exercises | filter:searched">
-          <md-icon ng-show="{{exercise.$id | exerciseGoalMet:goalsMet}}">
-            <ng-md-icon class="exercise-completed" icon="check_box" ></ng-md-icon>
-          </md-icon>
-          <md-icon ng-hide="{{exercise.$id | exerciseGoalMet:goalsMet}}">
-            <ng-md-icon class="exercise-not-completed" icon="check_box_outline_blank" ></ng-md-icon>
-          </md-icon>
-          {{ exercise.exercise_name }}
-        </md-option>
-      </md-select>
-    </md-input-container>
-    <div layout="row" layout-align="end center">
-      <md-button class="md-raised md-primary" ng-click="addToWorkout()">Add to Workout</md-button>
-    </div>
-  </md-dialog-content>
+  <md-content>
+   <md-tabs md-dynamic-height md-border-bottom>
+     <md-tab label="By Exercise">
+       <md-content class="md-padding">
+         <md-dialog-content layout-padding>
+           <p>Use the filters below to narrow the exercise list OR select a body part to see the highest level completed in that area.</p>
+           <exercise-filter></exercise-filter>
+           <md-input-container class="md-block">
+             <label>Exercise</label>
+             <md-select ng-model="selectedExercise">
+               <md-option ng-value="exercise.exercise_name" ng-repeat="exercise in exercises | filter:searched">
+                 <md-icon ng-show="{{exercise.$id | exerciseGoalMet:goalsMet}}">
+                   <ng-md-icon class="exercise-completed" icon="check_box" ></ng-md-icon>
+                 </md-icon>
+                 <md-icon ng-hide="{{exercise.$id | exerciseGoalMet:goalsMet}}">
+                   <ng-md-icon class="exercise-not-completed" icon="check_box_outline_blank" ></ng-md-icon>
+                 </md-icon>
+                 {{ exercise.exercise_name }}
+               </md-option>
+             </md-select>
+           </md-input-container>
+           <div layout="row" layout-align="end center">
+             <md-button class="md-raised md-primary" ng-click="addToWorkout()">Add to Workout</md-button>
+           </div>
+         </md-dialog-content>
+       </md-content>
+     </md-tab>
+     <md-tab label="By Routine">
+       <md-content class="md-padding">
+         <md-dialog-content layout-padding>
+           <div layout="row" layout-padding layout-wrap id="routines">
+             <div flex="100">
+
+               <md-input-container class="md-block no-margin">
+                 <!-- Use floating placeholder instead of label -->
+                 <md-icon>
+                   <ng-md-icon icon="search" ></ng-md-icon>
+                 </md-icon>
+                 <input ng-model="searched.$" type="text" placeholder="Search Routines">
+               </md-input-container>
+             </div>
+             <div flex="100">
+               <span>User Routines</span>
+             </div>
+             <div flex="100">
+               <md-divider></md-divider>
+             </div>
+             <div flex="100">
+               <div class="md-caption text-center add-routine">No user routines created yet, add one!</div>
+             </div>
+             <div flex="100">
+               <span>Shared Routines</span>
+             </div>
+             <div flex="100">
+               <md-divider></md-divider>
+             </div>
+             <div flex="50" flex-sm="100" flex-xs="100" ng-repeat="routine in sharedRoutines | filter:searched">
+               <md-card layout-padding class="history-card" >
+                 <md-card-title>
+                   <md-card-title-text>
+                     <span class="md-headline">{{ routine.label}}</span>
+                     <span class="md-subhead"></span>
+                   </md-card-title-text>
+                 </md-card-title>
+                 <md-divider></md-divider>
+                 <md-card-content>
+                   <div>
+                     <div ng-repeat="bodyPart in routine.body_parts">
+                       CC:{{bodyPart.cc}} - {{(bodyPart.body_part | getValById:bodyParts:'$id').name}}
+                       <span ng-if="bodyPart.use_highest_step_for_default" class="md-caption">Default Step: Highest Step + 1</span>
+                       <span ng-if="!bodyPart.use_highest_step_for_default" class="md-caption">Default Step: {{bodyPart.custom_default_step}}</span>
+                     </div>
+                   </div>
+                 </md-card-content>
+                 <md-card-actions layout="row" layout-align="end center">
+                  <md-button class="md-primary" ng-click="useRoutine(routine)">Use Routine</md-button>
+                </md-card-actions>
+               </md-card>
+             </div>
+           </div>
+         </md-dialog-content>
+       </md-content>
+     </md-tab>
+     <!--<md-tab label="By Recent">
+       <md-content class="md-padding">
+         <md-dialog-content layout-padding>
+
+
+         </md-dialog-content>
+       </md-content>
+     </md-tab>-->
+   </md-tabs>
+ </md-content>
 </md-dialog>

@@ -15,7 +15,11 @@
         <div class="exercise-card-heading" ng-style="{'background':'url(../img/exercises/{{(exercise.exercise_id | getValById:exercises:'$id').type}}/{{(exercise.exercise_id | getValById:exercises:'$id').body_part}}/{{(exercise.exercise_id | getValById:exercises:'$id').step}}.jpg) no-repeat', 'background-size':'100%', 'background-position':'0px -50px'}">
           <div class="darken-image">
             <div class="heading-content" layout="row" layout-wrap>
-              <span flex class="md-display-1" flex="100" ng-cloak title="{{exercise.exercise_name}}" layout-padding>{{exercise.exercise_name}}</span>
+              <div flex></div>
+              <div class="pointer" ng-click="deleteExercise($event, exercise)">
+                <ng-md-icon icon="close"></ng-md-icon>
+              </div>
+              <span class="md-display-1" flex="100" ng-cloak title="{{exercise.exercise_name}}" layout-padding>{{exercise.exercise_name}}</span>
               <div flex="100" layout="row">
                 <span flex class="md-caption" flex="100" ng-cloak>
                   <span class="body-part-step-highlight">
@@ -55,20 +59,24 @@
           </div>
 
           <div layout="row" ng-repeat="set in exercise.sets">
-              <md-input-container flex="15" class="md-block" flex-gt-xs>
-                 <label>Recent</label>
+              <md-input-container flex="20" class="md-block no-margin" flex-gt-xs>
+                 <label>Last</label>
                  <input ng-model="(set.set_no | recentSet:exercise.recentSets).set_val" disabled ng-if="(set.set_no | recentSet:exercise.recentSets).set_val">
                  <input value="N/A" disabled ng-if="!(set.set_no | recentSet:exercise.recentSets).set_val">
              </md-input-container>
-             <md-input-container flex="85" class="md-block" flex-gt-xs>
+             <md-input-container flex="80" class="md-block no-margin" flex-gt-xs>
                 <label ng-cloak>Set No: {{set.set_no}}</label>
                 <input required type="number" step="any" ng-model="set.set_val" min="0"
                   max="200" ng-change="change(exercise)" ng-model-options="{ debounce: 750 }"/>
               </md-input-container>
           </div>
-          <md-content ng-show="exercise.goal_met">
-            Exercise Goal Met!
-          </md-content>
+          <div ng-show="exercise.goal_met">
+              <md-icon>
+                <ng-md-icon size="30" icon="done_all" style="fill:#4CAF50">
+              </ng-md-icon>
+            </md-icon>
+              Goal Met!
+          </div>
         </md-card-content>
         <md-card-actions layout="row" layout-align="end center">
           <md-button ng-click="showExercise($event, exercise.exercise_name)">Exercise Info</md-button>

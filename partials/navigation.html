@@ -56,6 +56,14 @@
         </md-button>
       </md-item-content>
     </md-item>
+    <md-item ng-show="firebaseUser">
+      <md-item-content>
+        <md-button ui-sref="routines" ui-sref-active="selected" ng-click="close('left')">
+          <ng-md-icon icon="view_quilt" ></ng-md-icon>
+          Routines
+        </md-button>
+      </md-item-content>
+    </md-item>
     <md-divider></md-divider>
     <md-item ng-show="firebaseUser">
       <md-item-content>

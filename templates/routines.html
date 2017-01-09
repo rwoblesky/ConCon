@@ -1,0 +1,52 @@
+
+<div layout="row" layout-padding layout-wrap id="routines">
+  <!--<md-button flex class="md-fab md-fab-bottom-right" aria-label="Add Exercise" ng-click="showAdvanced($event)">
+    <ng-md-icon icon="add"></ng-md-icon>
+  </md-button>-->
+  <div flex="100">
+
+    <md-input-container class="md-block no-margin">
+      <!-- Use floating placeholder instead of label -->
+      <md-icon>
+        <ng-md-icon icon="search" ></ng-md-icon>
+      </md-icon>
+      <input ng-model="searched.$" type="text" placeholder="Search Routines">
+    </md-input-container>
+  </div>
+  <div flex="100">
+    <span>User Routines</span>
+  </div>
+  <div flex="100">
+    <md-divider></md-divider>
+  </div>
+  <div flex="100">
+    <div class="md-caption text-center add-routine">No user routines created yet, feature coming soon!!</div>
+  </div>
+  <div flex="100">
+    <span>Shared Routines</span>
+  </div>
+  <div flex="100">
+    <md-divider></md-divider>
+  </div>
+  <div flex="50" flex-sm="100" flex-xs="100" ng-repeat="routine in sharedRoutines | filter:searched">
+    <md-card layout-padding class="history-card" >
+      <md-card-title>
+        <md-card-title-text>
+          <span class="md-headline">{{ routine.label}}</span>
+          <span class="md-subhead"></span>
+        </md-card-title-text>
+      </md-card-title>
+      <md-divider></md-divider>
+      <md-card-content>
+        <div>
+          <div ng-repeat="bodyPart in routine.body_parts">
+            CC:{{bodyPart.cc}} - {{(bodyPart.body_part | getValById:bodyParts:'$id').name}}
+            <span ng-if="bodyPart.use_highest_step_for_default" class="md-caption">Default Step: Highest Step Completed</span>
+            <span ng-if="!bodyPart.use_highest_step_for_default" class="md-caption">Default Step: {{bodyPart.custom_default_step}}</span>
+          </div>
+        </div>
+      </md-card-content>
+    </md-card>
+  </div>
+
+</div>
