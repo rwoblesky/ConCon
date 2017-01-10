@@ -1,5 +1,5 @@
 <div layout="row" layout-padding layout-wrap>
-  <div flex="50" flex-sm="100" flex-xs="100" ng-repeat="(key, value) in history | groupBy:'time'">
+  <div flex="50" flex-sm="100" flex-xs="100" ng-repeat="(key, value) in (history | orderBy:'time':true) | groupBy:'time'">
     <md-card layout-padding class="history-card" >
       <md-card-title>
         <md-card-title-text>

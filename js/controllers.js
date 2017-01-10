@@ -185,7 +185,7 @@ conConApp
          return $firebaseArray(ref.orderByChild("exercise_id").equalTo(exerciseId));
        },
        getHistory : function(userId){
-         var ref = firebase.database().ref().child("user_data").child(userId);
+         var ref = firebase.database().ref().child("user_data").child(userId).child("exercise_log");
          return $firebaseArray(ref.orderByChild("time"));
        },
        getGoalsMet : function(userId){
@@ -757,31 +757,9 @@ conConApp
   ];
 
 })
-.controller('routinesCtrl', function ($scope, Auth, ConData) {
+.controller('routinesCtrl', function ($scope, $mdMedia, $mdDialog, Auth, ConData) {
   $scope.bodyParts = ConData.getBodyParts();
 
   $scope.sharedRoutines = ConData.getSharedRoutines();
 
-  //helper to add new shared routines (while DB permissions allow)
-  /*$scope.sharedRoutines.$add({
-    label: 'CC1: The Basics - A',
-    body_parts: [{
-      body_part: 'chest',
-      cc: '1',
-      use_highest_step_for_default: true,
-      custom_default_step: ''
-    },
-    {
-      body_part: 'core_front',
-      cc: '1',
-      use_highest_step_for_default: true,
-      custom_default_step: ''
-    },
-    {
-      body_part: 'legs',
-      cc: '1',
-      use_highest_step_for_default: true,
-      custom_default_step: ''
-    }]
-  });*/
 });
