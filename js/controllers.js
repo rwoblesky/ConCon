@@ -183,6 +183,7 @@ conConApp
        getRecentExercises : function(userId, exerciseId){//TODO: Write this function, will be added to the exercise card
          var ref = firebase.database().ref().child("user_data").child(userId).child("exercise_log");
          return $firebaseArray(ref.orderByChild("exercise_id").equalTo(exerciseId));
+         //return $firebaseArray(ref.orderByChild("time"));
        },
        getHistory : function(userId){
          var ref = firebase.database().ref().child("user_data").child(userId).child("exercise_log");
@@ -544,6 +545,14 @@ conConApp
         var exercise = $filter('getValById')($scope.selectedExercise, $scope.exercises, "exercise_name");
         var recentSets = ConData.getRecentExercises(userId, exercise.$id);
         recentSets.$loaded().then(function(recents){
+          recents.sort(function(a, b){
+            var keyA = a.time,
+                keyB = b.time;
+            // Compare the 2 dates
+            if(keyA < keyB) return 1;
+            if(keyA > keyB) return -1;
+            return 0;
+          });
           $scope.todaysLog.$add({
             time: +moment($scope.logDate).startOf('day'),
             exercise_name : $scope.selectedExercise,
