@@ -39,7 +39,11 @@ md-toolbar .user {
   font-size: 18px;
   color: white;
 }
-#log .md-fab {
+#dashboard .md-fab{
+  color: white;
+  line-height: 0px;
+}
+#log .md-fab{
   color: white;
   top: 15px;
 }
